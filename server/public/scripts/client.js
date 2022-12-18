@@ -15,14 +15,24 @@ function fetchAndRenderTasks() {
     }).then((response) => {
         $('#taskList').empty();
         for (let task of response) {
+            if (task.complete === 'TRUE') {
             $('#taskList').append(`
-            <li data-id=${task.id}>
-                <button class="completedButton">Mark Complete</button>
+            <li data-id=${task.id} class="completedButtonCSS">
+                <button class="completedButton">✅</button>
+                ${task.task}
+                <button class="deleteButton">🗑</button>
+            </li>
+            `)
+        } else {
+            $('#taskList').append(`
+            <li data-id=${task.id} class="uncompletedTask">
+                <button class="completedButton">❌</button>
                 ${task.task}
                 <button class="deleteButton">🗑</button>
             </li>
             `)
         }
+    }
     }).catch((error) => {
         console.log('err client-side GET', error);
     })
@@ -35,7 +45,7 @@ function createTask() {
         task: newTaskName,
         complete: 'FALSE'
     }
-
+    $('#taskInput').val('')
     $.ajax({
         method: 'POST',
         url: '/taskList',
@@ -45,6 +55,7 @@ function createTask() {
     }).catch ((error) => {
         console.log('err client-side POST', error);
     })
+    $('#taskInput').val('')
 }
 
 function markTaskCompleted() {

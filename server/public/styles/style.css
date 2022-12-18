@@ -1,0 +1,17 @@
+body {
+    background-color:rgb(153, 150, 183);
+    color: teal;
+    font-family: fantasy, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: larger;
+    -webkit-text-stroke-width: .05px;
+    -webkit-text-stroke-color: teal;
+}
+
+.completedButtonCSS {
+    color:teal;
+    text-decoration: line-through;
+}
+
+.uncompletedTask {
+    color:crimson
+}

@@ -28,18 +28,6 @@ You are going to create a 'TO DO' application. This type of application is very 
 * Deleting a Task should remove it both from the front end as well as the Database.
 [x] Need to use a delete route to accomplish this.
 
-Dummy Data for client.js:
-let taskToDo= [{
-  task: 'wash dishes'
-  },
-  {
-  task: 'do laundry'
-  },
-  {
-  task: 'cook dinner'
-  }
-  ]
-
 ### Styling
 
 Use CSS styling to move the aesthetic of the page beyond the vanilla HTML look:
