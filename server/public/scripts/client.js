@@ -17,7 +17,7 @@ function fetchAndRenderTasks() {
         for (let task of response) {
             $('#taskList').append(`
             <li data-id=${task.id}>
-                <button class="completedButton">✅or❌</button>
+                <button class="completedButton">Mark Complete</button>
                 ${task.task}
                 <button class="deleteButton">🗑</button>
             </li>
@@ -30,10 +30,10 @@ function fetchAndRenderTasks() {
 
 function createTask() {
     let newTaskName = $('#taskInput').val();
-    let newCompletedStatus = $('.completedButton').on('click', markTaskCompleted)
+
     let newTask = {
         task: newTaskName,
-        complete: newCompletedStatus
+        complete: 'FALSE'
     }
 
     $.ajax({
@@ -48,13 +48,13 @@ function createTask() {
 }
 
 function markTaskCompleted() {
-    let idToUpdate = $(this).parent().data().id;
+    let idToUpdate = $(this).parent().data().id
 
     $.ajax({
         method: 'PUT',
         url: `/taskList/${idToUpdate}`,
         data: {
-            complete: 'Completed'
+            complete: 'TRUE'
         }
     }).then((response) => {
         fetchAndRenderTasks();

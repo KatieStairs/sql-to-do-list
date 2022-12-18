@@ -45,7 +45,7 @@ app.post('/taskList', (req, res) => {
         VALUES
         ($1, $2);
     `
-    let sqlValues = [req.body.name, req.body.type];
+    let sqlValues = [req.body.task, req.body.complete];
     pool.query(sqlQuery, sqlValues)
         .then((dbRes) => {
             res.sendStatus(201);
@@ -61,7 +61,7 @@ app.put('/taskList/:id', (req, res) => {
     console.log('req.body:', req.body);
 
     let idToUpdate = req.params.id;
-    let taskComplete = req.body.type;
+    let taskComplete = req.body.complete;
 
     let sqlQuery = `
         UPDATE "taskList"
