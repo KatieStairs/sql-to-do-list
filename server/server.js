@@ -22,7 +22,7 @@ app.use(express.static('server/public'));
 app.get('/taskList', (req, res) => {
     console.log('in GET /taskList');
     let sqlQuery = `
-        SELECT * FROM "tasks"
+        SELECT * FROM "taskList"
             ORDER BY "id";
     `;
     pool.query(sqlQuery)
@@ -41,27 +41,63 @@ app.post('/taskList', (req, res) => {
 // Dummy Data for client.js:
     let sqlQuery = `
         INSERT INTO "taskList"
-        ("task")
+        ("task", "complete")
         VALUES
-        ($1);
+        ($1, $2);
     `
     let sqlValues = [req.body.name, req.body.type];
-    
-
-let taskToDo= [
-    {
-    task: 'wash dishes'
-    },
-    {
-    task: 'do laundry'
-    },
-    {
-    task: 'cook dinner'
-    }
-];
+    pool.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(201);
+        })
+        .catch((dbErr) => {
+            console.log('Err in POST /taskList', dbErr);
+            res.sendStatus(500)
+        })
 })
 
+app.put('/taskList/:id', (req, res) => {
+    console.log('req.params:', req.params);
+    console.log('req.body:', req.body);
 
+    let idToUpdate = req.params.id;
+    let taskComplete = req.body.type;
+
+    let sqlQuery = `
+        UPDATE "taskList"
+            SET "complete"=$1
+            WHERE "id"=$2;
+    `
+    let sqlValues = [taskComplete, idToUpdate];
+
+    pool.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(200);
+        })
+        .catch((dbErr) => {
+            console.log('something happened in PUT /taskList/:id', dbErr);
+            res.sendStatus(500);
+        })
+})
+
+app.delete('/taskList/:id', (req, res) => {
+    console.log(req.params);
+    let idToDelete = req.params.id;
+
+    let sqlQuery = `
+        DELETE FROM "taskList"
+            WHERE "id"=$1;
+    `
+    let sqlValues = [idToDelete];
+    pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+        res.sendStatus(200);
+    })
+    .catch((dbErr) => {
+        console.log('something happened in DELETE /taskList/:id', dbErr);
+        res.sendStatus(500);
+    })
+})
 
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`)
